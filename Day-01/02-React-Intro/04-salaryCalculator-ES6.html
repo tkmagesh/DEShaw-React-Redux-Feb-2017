@@ -105,6 +105,13 @@
         updateTax(){
           this.props.model.set('tax', this.refs.rangeTax.value.toInt());
         }
+        resetCalc(){
+          this.props.model.set('basic', 0);
+          this.props.model.set('hra', 0);
+          this.props.model.set('da', 0);
+          this.props.model.set('tax', 0);
+          this.props.model.set('salary', 0);
+        }
         render(){
           var modelData = this.props.model._data;
           return (
@@ -129,7 +136,7 @@
               <div className="field">
                 <input type="button" value="Calculate" onClick={this.calculateClick.bind(this)} />
               </div>
-              <SalaryComponent model={modelData.salary}></SalaryComponent>
+              <SalaryComponent model={modelData.salary} reset={this.resetCalc.bind(this)}></SalaryComponent>
           </div>
           )
         }
@@ -137,10 +144,14 @@
       
       
       class SalaryComponent extends React.Component{
+        resetClick(){
+          this.props.reset();
+        }
         render(){
           return (
              <div className="field">
                 <div id="divResult">{this.props.model}</div>
+                <input type="button" value="Reset" onClick={this.props.reset}/>
               </div>
           )
         } 
@@ -151,7 +162,7 @@
           var products = ['Pen', 'Pencil', 'Marker'];
           
           var items = products.map((product,index) => {
-            console.log(product, index);
+            
             return (
               <li key={index}>{product}</li>
             )
