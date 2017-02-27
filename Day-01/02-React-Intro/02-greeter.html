@@ -121,64 +121,7 @@
       };
 
 
-      var SalaryCalculatorComponent = React.createClass({
-        getInitialState : function(){
-          return {
-            basic : 0,
-            hra : 0,
-            da : 0,
-            tax : 0,
-            salary : 0
-          }
-        },
-        calculateClick : function(){
-          var data = this.state;
-          var gross = data.basic + data.hra + data.da;
-          var net = gross * ((100-data.tax)/100);
-          this.setState({salary : net});
-        },
-        updateBasic : function(){
-          this.setState({basic : this.refs.txtBasic.value.toInt()})
-        },
-        updateHra : function(){
-          this.setState({hra : this.refs.txtHra.value.toInt()})
-        },
-        updateDa : function(){
-          this.setState({da : this.refs.txtDa.value.toInt()})
-        },
-        updateTax : function(){
-          this.setState({tax : this.refs.rangeTax.value.toInt()})
-        },
-        render : function(){
-          return (
-            <div className="content">
-              <div className="field">
-                <label htmlFor="">Basic :</label>
-                <input type="text" ref="txtBasic" onChange={this.updateBasic}/>
-              </div>
-              <div className="field">
-                <label htmlFor="">HRA :</label>
-                <input type="text" ref="txtHra" onChange={this.updateHra}/>
-              </div>
-              <div className="field">
-                <label htmlFor="">DA :</label>
-                <input type="text" ref="txtDa" onChange={this.updateDa}/>
-              </div>
-              <div className="field">
-                <label htmlFor="">Tax :</label>
-                <input type="range" ref="rangeTax" min="0" max="30" defaultValue={this.state.tax} onChange={this.updateTax} />
-                <span id="spanTax">{this.state.tax}</span>
-              </div>
-              <div className="field">
-                <input type="button" value="Calculate" onClick={this.calculateClick} />
-              </div>
-              <div className="field">
-                <div id="divResult">{this.state.salary}</div>
-              </div>
-          </div>
-          )
-        }
-      })
+      
       
       var greeter = new Greeter();
       greeter.set('firstName', 'Magesh');
