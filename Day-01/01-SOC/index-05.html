@@ -43,21 +43,24 @@
 				_data[attrName] = value;
 
 				//trigger change notification for 'attrName'
-				var listenerFn = _changeListeners[attrName];
-				if (typeof listenerFn === 'function')
-					listenerFn();
+				var listenerFns = _changeListeners[attrName];
+				listenerFns.forEach(function(listenerFn){
+					if (typeof listenerFn === 'function')
+						listenerFn();	
+				});
+				
 			};
 
 			var _changeListeners = {
-				basic : null,
-				hra : null,
-				da : null,
-				tax : null,
-				salary : null
+				basic : [],
+				hra : [],
+				da : [],
+				tax : [],
+				salary : []
 			};
 
 			this.onChange = function(attrName, listenerFn){
-				_changeListeners[attrName] = listenerFn;
+				_changeListeners[attrName].push(listenerFn);
 			};
 		}
 		SalaryCalculator.prototype.calculate = function(){
