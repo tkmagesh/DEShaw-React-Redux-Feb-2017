@@ -111,15 +111,15 @@
             <div className="content">
               <div className="field">
                 <label htmlFor="">Basic :</label>
-                <input type="text" ref="txtBasic" onChange={this.updateBasic.bind(this)} defaultValue={modelData.basic}/>
+                <input type="text" ref="txtBasic" onChange={this.updateBasic.bind(this)} value={modelData.basic}/>
               </div>
               <div className="field">
                 <label htmlFor="">HRA :</label>
-                <input type="text" ref="txtHra" onChange={this.updateHra.bind(this)} defaultValue={modelData.hra}/>
+                <input type="text" ref="txtHra" onChange={this.updateHra.bind(this)} value={modelData.hra}/>
               </div>
               <div className="field">
                 <label htmlFor="">DA :</label>
-                <input type="text" ref="txtDa" onChange={this.updateDa.bind(this)} defaultValue={modelData.da}/>
+                <input type="text" ref="txtDa" onChange={this.updateDa.bind(this)} value={modelData.da}/>
               </div>
               <div className="field">
                 <label htmlFor="">Tax :</label>
@@ -146,18 +146,39 @@
         } 
       }
   
+      class ItemList extends React.Component{
+        render(){
+          var products = ['Pen', 'Pencil', 'Marker'];
+          
+          var items = products.map((product,index) => {
+            console.log(product, index);
+            return (
+              <li key={index}>{product}</li>
+            )
+          });
 
+          return (
+            <ol>
+              {items}
+            </ol>
+          )
+        }
+      }
 
 
 
       window.calculator = new SalaryCalculator();
     
-      
+      calculator.set('basic', 20000);
+
       calculator.subscribe('all', renderComponent);
 
       function renderComponent(){
         ReactDOM.render(
-          <SalaryCalculatorComponent model={calculator}></SalaryCalculatorComponent>
+          <div>
+            <SalaryCalculatorComponent model={calculator}></SalaryCalculatorComponent>
+            <ItemList></ItemList>
+          </div>
           ,document.getElementById('root')
         );
       }
