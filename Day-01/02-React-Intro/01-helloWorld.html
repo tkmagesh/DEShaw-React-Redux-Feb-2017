@@ -6,15 +6,51 @@
     <script src="react.js"></script>
     <script src="react-dom.js"></script>
     <script src="babel.min.js"></script>
+    <style>
+        .greeting{
+          border : 1px solid gray;
+          padding: 10px;
+          background-color: #e7e7e7;
+          font-size: 22pt;
+          font-weight: bold;
+        }
+    </style>
   </head>
   <body>
+   
     <div id="root"></div>
-    <script type="text/babel">
 
+    <script type="text/babel">
+      
+      var Greeter = React.createClass({
+        getInitialState : function(){
+          return {
+            message : 'A dummy initial message'
+          };
+        },
+        onGreetClick : function(){
+          var greetMessage = 'Hi ' + this.refs.txtName.value + ', Welcome to React.js!';
+          this.setState({ message : greetMessage});
+        },
+        render : function(){
+          return (
+            <div>
+              <h1>Greeter</h1>
+              <label htmlFor="">Name :</label>
+              <input type="text" ref="txtName"/>
+              <input type="button" value="Greet" onClick={this.onGreetClick}/>
+              <div className="greeting">{this.state.message}</div>
+            </div>
+          )
+        }
+      });
+      
+      
       ReactDOM.render(
-        <h1>Hello, world!</h1>,
+        <Greeter></Greeter>,
         document.getElementById('root')
       );
+    
 
     </script>
   </body>
