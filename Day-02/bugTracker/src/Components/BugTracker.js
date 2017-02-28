@@ -6,7 +6,7 @@ import { BugItem } from './BugItem';
 import { connect } from 'react-redux';
 
 function mapStateToProps(state){
-	return { bugs : state };
+	return { bugs : state.bugsReducer };
 }
 
 function mapDispatchToProps(dispatch){
@@ -35,12 +35,33 @@ function mapDispatchToProps(dispatch){
 					}
 				};
 				dispatch(toggleAction);
+			},
+			load : function(){
+				dispatch({
+					type : 'ASYNC_START'
+				});
+				fetch('http://localhost:8000/bugs')
+					.then(response => response.json())
+					.then(bugs => {
+						dispatch({
+							type : 'INIT_BUGS',
+							payload : {
+								bugs : bugs
+							}
+						});
+						dispatch({
+							type : 'ASYNC_STOP'
+						});
+					});
 			}
 		}
 	}
 }
 
 class BugTracker extends Component{
+	componentDidMount(){
+		this.props.actions.load();
+	}
 	addClick(newBugName){
 		this.props.actions.createBug(newBugName);
 	}
@@ -48,7 +69,6 @@ class BugTracker extends Component{
 		this.props.actions.removeClosed();
 	}
 	render(){
-		console.log('render -> ', this.props);
 		var list = this.props.bugs;
 	
 		var bugItems = list.map((bug,index) => {

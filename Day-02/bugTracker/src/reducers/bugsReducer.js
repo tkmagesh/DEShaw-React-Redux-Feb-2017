@@ -24,6 +24,9 @@ export function bugsReducer(state = [], action){
     
     case 'REMOVE_CLOSED':
       return state.filter(bug => !bug.isClosed);
+
+    case 'INIT_BUGS':
+      return action.payload.bugs;
     
     default:
       return state;
