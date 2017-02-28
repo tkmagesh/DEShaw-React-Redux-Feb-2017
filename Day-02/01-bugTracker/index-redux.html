@@ -112,7 +112,7 @@
 		      break;
 
 		    case 'TOGGLE':
-		      var bugToToggle = action.payload;
+		      var bugToToggle = action.payload.bug;
 		      return state.map(bug => {
 		        if (bug == bugToToggle){
 		          return {
@@ -176,11 +176,19 @@
 	    }
 
 	    class BugItem extends React.Component{
-
+			onBugNameClick(){
+				var toggleAction = {
+					type : 'TOGGLE',
+					payload : {
+						bug : this.props.bug
+					}
+				};
+				this.props.store.dispatch(toggleAction);
+			}
 	    	render() {
 	    		var bug = this.props.bug;
 
-	    		var bugNameItem = bug.isClosed ? <span className="bugname closed">{bug.name}</span> : <span className="bugname">{bug.name}</span>;
+	    		var bugNameItem = bug.isClosed ? <span onClick={this.onBugNameClick.bind(this)} className="bugname closed">{bug.name}</span> : <span onClick={this.onBugNameClick.bind(this)} className="bugname">{bug.name}</span>;
 
 				return (
 						<li>
@@ -210,7 +218,7 @@
 			render(){
 				var list = this.props.store.getState();
 				var bugItems = list.map((bug,index) => {
-					return (<BugItem bug={bug} key={index}></BugItem>)
+					return (<BugItem bug={bug} store={this.props.store} key={index}></BugItem>)
 				});
 				return (
 					<div>
