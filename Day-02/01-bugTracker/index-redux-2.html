@@ -57,49 +57,10 @@
 	<script src="react.js"></script>
     <script src="react-dom.js"></script>
     <script src="babel.min.js"></script>
-    
+    <script src="redux.js"></script>
+
     <script type="text/babel">
-    	class Events{
-		  constructor(){
-		    this.listeners = {};
-		  }
-		  subscribe(evtName, listenerFn){
-		    this.listeners[evtName] = this.listeners[evtName] || [];
-		    this.listeners[evtName].push(listenerFn);
-		  }
-
-		  trigger(evtName){
-		    var listenerFns = this.listeners[evtName] || [];
-		    listenerFns.forEach(listenerFn => {
-		      if (typeof listenerFn === 'function')
-		        listenerFn();
-		    })
-		  }
-		}
-		
-		/* App State */
-		class Store extends Events{
-
-		  constructor(reducer){
-		    super();
-		    var initAction = { type : 'INIT_STATE'};
-		    this._state = reducer(undefined, initAction);
-		    this._reducer = reducer;
-		  }
-
-		  dispatch(action){
-		    var newState = this._reducer(this._state, action)
-		    if (newState !== this._state){
-		      this._state = newState;
-		      this.trigger('all');
-		    }
-		  }
-
-		  getState(){
-		    return this._state;
-		  }
-
-		}
+    	
 
 		function bugsReducer(state = [], action){
 		  switch(action.type){
@@ -237,13 +198,13 @@
 			}
 		}
 		
-		window.store = new Store(bugsReducer);
+		window.store = Redux.createStore(bugsReducer);
 		
 		function renderApp(){
 			ReactDOM.render(<BugTracker store={store}></BugTracker>, document.getElementById("content"));		
 		}
 		renderApp();
-		store.subscribe('all', renderApp);
+		store.subscribe(renderApp);
 
     </script>
 </head>
