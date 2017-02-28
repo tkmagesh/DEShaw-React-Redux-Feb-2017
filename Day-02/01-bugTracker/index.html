@@ -125,9 +125,53 @@
 	    	}
 	    }
 
+	    class BugSort extends React.Component{
+	    	render(){
+	    		return (
+	    			<section className="sort">
+							<label >Order By :</label>
+							<input type="text" />
+							<label >Descending ? :</label>
+							<input type="checkbox" />
+						</section>
+	    		)
+	    	}
+	    }
+
+	    class NewBug extends React.Component{
+	    	onAddClick(){
+	    		var bugName = this.refs.txtBugName.value;
+	    		this.props.onAdd(bugName);
+	    	}
+	    	render(){
+	    		return (
+	    			<section className="edit">
+							<label >New Bug :</label>
+							<input type="text" ref="txtBugName"/>
+							<input type="button" value="Add" onClick={this.onAddClick.bind(this)}/>
+						</section>
+	    		)
+	    	}
+	    }
+
+	    class BugItem extends React.Component{
+
+	    	render() {
+	    		var bug = this.props.bug;
+
+	    		var bugNameItem = bug.isClosed ? <span className="bugname closed">{bug.name}</span> : <span className="bugname">{bug.name}</span>;
+
+				return (
+						<li>
+							{bugNameItem}	
+							<div className="datetime">[CreatedAt]</div>
+						</li>
+					)
+	    	}
+	    }
+
 		class BugTracker extends React.Component{
-			addClick(){
-				var newBugName = this.refs.txtBugName.value;
+			addClick(newBugName){
 				this.props.bugs.addNew(newBugName);
 			}
 			removeClosedClick(){
@@ -136,28 +180,13 @@
 			render(){
 				var list = this.props.bugs.getList();
 				var bugItems = list.map((bug,index) => {
-					var bugItem = bug.isClosed ? <span className="bugname closed">{bug.name}</span> : <span className="bugname">{bug.name}</span>;
-				return (
-						<li key={index}>
-							{bugItem}	
-							<div className="datetime">[CreatedAt]</div>
-						</li>
-					)
+					return (<BugItem bug={bug} key={index}></BugItem>)
 				});
 				return (
 					<div>
 						<BugStats bugs={list}></BugStats>
-						<section className="sort">
-							<label >Order By :</label>
-							<input type="text" />
-							<label >Descending ? :</label>
-							<input type="checkbox" />
-						</section>
-						<section className="edit">
-							<label >New Bug :</label>
-							<input type="text" ref="txtBugName"/>
-							<input type="button" value="Add" onClick={this.addClick.bind(this)}/>
-						</section>
+						<BugSort></BugSort>
+						<NewBug onAdd={this.addClick.bind(this)}></NewBug>
 						<section className="list">
 							<ol>
 								{bugItems}
